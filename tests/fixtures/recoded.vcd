@@ -1,0 +1,48 @@
+$date Mon Jan 01 00:00:00 2024 $end
+$version wavediff test fixture (golden content, different id codes) $end
+$timescale 1ns $end
+$scope module tb $end
+$var wire 1 a clk $end
+$var wire 1 b rst_n $end
+$scope module dut $end
+$var wire 8 c count [7:0] $end
+$var wire 1 d valid $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+0a
+0b
+b00000000 c
+0d
+$end
+#5
+1a
+#6
+1b
+#10
+0a
+#11
+1d
+b00000001 c
+#15
+1a
+#20
+0a
+b00000010 c
+#25
+1a
+#30
+0a
+b00000011 c
+#35
+1a
+#40
+0a
+b00000100 c
+#45
+1a
+#50
+0a
+#51
+0d

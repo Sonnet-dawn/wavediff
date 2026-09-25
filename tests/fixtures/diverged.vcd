@@ -1,0 +1,48 @@
+$date Mon Jan 01 00:00:00 2024 $end
+$version wavediff test fixture (diverged) $end
+$timescale 1ns $end
+$scope module tb $end
+$var wire 1 ! clk $end
+$var wire 1 " rst_n $end
+$scope module dut $end
+$var wire 8 # count [7:0] $end
+$var wire 1 $ valid $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+0!
+0"
+b00000000 #
+0$
+$end
+#5
+1!
+#6
+1"
+#10
+0!
+#11
+1$
+b00000001 #
+#15
+1!
+#20
+0!
+b00000010 #
+#25
+1!
+#30
+0!
+b00000111 #
+#35
+1!
+#40
+0!
+b00000100 #
+#45
+1!
+#50
+0!
+#51
+0$

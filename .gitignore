@@ -1,0 +1,51 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test scratch space (kept inside the repo so sandboxes can write to it)
+tests/_tmp/
+_testreport.txt
+.testout.txt
+
+# Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+wheelhouse/
+
+# Environments
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Waveform dumps are large and usually not worth committing
+*.vcd
+*.fst
+*.fsdb
+*.ghw
+*.shm
+*.wlf
+# ...except the small hand-written ones the tests and examples need
+!tests/fixtures/*.vcd
+!examples/*.vcd
+
+# Generated demo report (regenerate with the command in the README)
+docs/demo.json
+diff.html
+diff.json

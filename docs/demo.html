@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>wavediff report</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 24px 64px; background: #f1f5f9; color: #0f172a;
+         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 650; }
+  .sub { color: #64748b; font-size: 13px; margin-bottom: 20px; }
+  .verdict { padding: 14px 18px; border-radius: 10px; font-weight: 600; font-size: 15px;
+              margin-bottom: 20px; border: 1px solid; }
+  .verdict.ok { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+  .verdict.bad { background: #fef2f2; border-color: #fca5a5; color: #b91c1c; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+           padding: 16px 18px; margin-bottom: 18px; }
+  .card h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em;
+              color: #64748b; margin: 0 0 12px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: #64748b; font-weight: 600; font-size: 11px;
+        text-transform: uppercase; letter-spacing: .05em; padding: 6px 8px;
+        border-bottom: 1px solid #e2e8f0; }
+  td { padding: 5px 8px; border-bottom: 1px solid #f1f5f9; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 999px;
+            font-size: 11px; font-weight: 600; }
+  .badge.ok { background: #dcfce7; color: #15803d; }
+  .badge.bad { background: #fee2e2; color: #b91c1c; }
+  .badge.warn { background: #fef3c7; color: #b45309; }
+  .panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+            padding: 12px 14px; margin-bottom: 14px; }
+  .sig-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline;
+               margin-bottom: 6px; }
+  .sig-head code { font-size: 13px; font-weight: 600; color: #0f172a; }
+  .meta { font-size: 11px; color: #64748b; }
+  .runs { margin-top: 8px; font-size: 12px; }
+  .note { font-size: 12px; color: #64748b; }
+  footer { margin-top: 26px; font-size: 12px; color: #94a3b8; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>wavediff report</h1>
+  <div class="sub">
+    <code>A</code> = examples\golden.vcd &nbsp;&middot;&nbsp;
+    <code>B</code> = examples\regressed.vcd<br/>
+    timescale 1ns &nbsp;&middot;&nbsp; alignment: absolute timestamps (mode=auto)
+  </div>
+  <div class="verdict bad">DIVERGED &mdash; first difference at t=36 (1ns) in 2 signal(s)</div>
+  <div class="card">
+    <h2>Signals</h2>
+    <table>
+      <thead><tr><th>signal</th><th>width</th><th>status</th><th>first diff</th><th>intervals</th></tr></thead>
+      <tbody><tr><td class='mono'>tb.dut.result</td><td>8</td><td><span class="badge bad">differ</span></td><td class='mono'>36</td><td>1</td></tr><tr><td class='mono'>tb.dut.valid</td><td>1</td><td><span class="badge bad">differ</span></td><td class='mono'>66</td><td>1</td></tr><tr><td class='mono'>tb.clk</td><td>1</td><td><span class="badge ok">match</span></td><td class='mono'></td><td>0</td></tr><tr><td class='mono'>tb.dut.state</td><td>4</td><td><span class="badge ok">match</span></td><td class='mono'></td><td>0</td></tr><tr><td class='mono'>tb.rst_n</td><td>1</td><td><span class="badge ok">match</span></td><td class='mono'></td><td>0</td></tr></tbody>
+    </table>
+  </div>
+  <div class="card"><h2>Divergent signals</h2></div>
+  <section class="panel"><div class="sig-head"><code>tb.dut.result</code><span class="meta">8 bits &middot; 1 differing interval(s) &middot; first at t=36</span></div><svg viewBox="0 0 900 110.0" width="100%" role="img" aria-label="waveform comparison for tb.dut.result"><rect x="0" y="0" width="900" height="110.0" fill="#ffffff"/><rect x="443.3" y="3.0" width="223.3" height="80.0" fill="#dc2626" opacity="0.10"/><text x="12" y="27.0" font-size="11" fill="#64748b" font-family="ui-monospace, monospace">A</text><rect x="220.0" y="6.0" width="223.3" height="34" fill="#ffffff" stroke="#2563eb" stroke-width="1.2"/><text x="331.7" y="27.0" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#334155">00100001</text><rect x="443.3" y="6.0" width="223.3" height="34" fill="#f1f5f9" stroke="#2563eb" stroke-width="1.2"/><text x="555.0" y="27.0" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#334155">00110010</text><rect x="666.7" y="6.0" width="223.3" height="34" fill="#ffffff" stroke="#2563eb" stroke-width="1.2"/><text x="778.3" y="27.0" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#334155">01000011</text><text x="12" y="67.0" font-size="11" fill="#64748b" font-family="ui-monospace, monospace">B</text><rect x="220.0" y="46.0" width="223.3" height="34" fill="#ffffff" stroke="#7c3aed" stroke-width="1.2"/><text x="331.7" y="67.0" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#334155">00100001</text><rect x="443.3" y="46.0" width="223.3" height="34" fill="#f1f5f9" stroke="#7c3aed" stroke-width="1.2"/><text x="555.0" y="67.0" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#334155">00111111</text><rect x="666.7" y="46.0" width="223.3" height="34" fill="#ffffff" stroke="#7c3aed" stroke-width="1.2"/><text x="778.3" y="67.0" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#334155">01000011</text><g transform="translate(220, 82.0)"><line x1="0.0" y1="0" x2="0.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="0.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">26</text><line x1="67.0" y1="0" x2="67.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="67.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">29</text><line x1="156.3" y1="0" x2="156.3" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="156.3" y="24" text-anchor="middle" font-size="10" fill="#64748b">33</text><line x1="245.7" y1="0" x2="245.7" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="245.7" y="24" text-anchor="middle" font-size="10" fill="#64748b">37</text><line x1="335.0" y1="0" x2="335.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="335.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">41</text><line x1="402.0" y1="0" x2="402.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="402.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">44</text><line x1="491.3" y1="0" x2="491.3" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="491.3" y="24" text-anchor="middle" font-size="10" fill="#64748b">48</text><line x1="580.7" y1="0" x2="580.7" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="580.7" y="24" text-anchor="middle" font-size="10" fill="#64748b">52</text><line x1="670.0" y1="0" x2="670.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="670.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">56</text></g></svg></section><table class='runs'><thead><tr><th>interval (A timeline)</th><th>A</th><th>B</th><th>duration</th></tr></thead><tbody><tr><td class='mono'>36 .. 46</td><td class='mono'>00110010</td><td class='mono'>00111111</td><td>10</td></tr></tbody></table><section class="panel"><div class="sig-head"><code>tb.dut.valid</code><span class="meta">1 bit &middot; 1 differing interval(s) &middot; first at t=66</span></div><svg viewBox="0 0 900 110.0" width="100%" role="img" aria-label="waveform comparison for tb.dut.valid"><rect x="0" y="0" width="900" height="110.0" fill="#ffffff"/><rect x="499.2" y="3.0" width="279.2" height="80.0" fill="#dc2626" opacity="0.10"/><text x="12" y="27.0" font-size="11" fill="#64748b" font-family="ui-monospace, monospace">A</text><path d="M 220.0 12.0 L 499.2 12.0 L 499.2 34.0 L 890.0 34.0" fill="none" stroke="#2563eb" stroke-width="2.2"/><text x="12" y="67.0" font-size="11" fill="#64748b" font-family="ui-monospace, monospace">B</text><path d="M 220.0 52.0 L 778.3 52.0 L 778.3 74.0 L 890.0 74.0" fill="none" stroke="#7c3aed" stroke-width="2.2"/><g transform="translate(220, 82.0)"><line x1="0.0" y1="0" x2="0.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="0.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">56</text><line x1="83.8" y1="0" x2="83.8" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="83.8" y="24" text-anchor="middle" font-size="10" fill="#64748b">59</text><line x1="167.5" y1="0" x2="167.5" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="167.5" y="24" text-anchor="middle" font-size="10" fill="#64748b">62</text><line x1="251.2" y1="0" x2="251.2" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="251.2" y="24" text-anchor="middle" font-size="10" fill="#64748b">65</text><line x1="335.0" y1="0" x2="335.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="335.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">68</text><line x1="418.8" y1="0" x2="418.8" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="418.8" y="24" text-anchor="middle" font-size="10" fill="#64748b">71</text><line x1="502.5" y1="0" x2="502.5" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="502.5" y="24" text-anchor="middle" font-size="10" fill="#64748b">74</text><line x1="586.2" y1="0" x2="586.2" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="586.2" y="24" text-anchor="middle" font-size="10" fill="#64748b">77</text><line x1="670.0" y1="0" x2="670.0" y2="10" stroke="#cbd5e1" stroke-width="1"/><text x="670.0" y="24" text-anchor="middle" font-size="10" fill="#64748b">80</text></g></svg></section><table class='runs'><thead><tr><th>interval (A timeline)</th><th>A</th><th>B</th><th>duration</th></tr></thead><tbody><tr><td class='mono'>66 .. 76</td><td class='mono'>0</td><td class='mono'>1</td><td>10</td></tr></tbody></table>
+  <footer>generated by wavediff</footer>
+</div>
+</body>
+</html>
