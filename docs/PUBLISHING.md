@@ -15,18 +15,28 @@ PYTHONPATH=src python -m wavediff tests/fixtures/golden.vcd tests/fixtures/diver
 
 Do not publish until both of these are clean on a fresh machine.
 
-## 1. Replace the placeholders
+## 1. Ownership placeholders
 
-Every occurrence of `Sonnet-dawn` must become your GitHub username, or the badges and
-links will 404 — the single most common way a good project looks abandoned on
-first contact.
+**Status: already done for this repository.** It is published at
+[github.com/Sonnet-dawn/wavediff](https://github.com/Sonnet-dawn/wavediff), and
+every ownership reference points there.
+
+If you are reusing this scaffold for a fork or a different project, the
+mechanism is: the template ships the literal token `OWNER` wherever an
+account name belongs, and publishing replaces it. A stale `OWNER` makes badges
+and links 404, which is the single most common way a good project looks
+abandoned on first contact.
 
 ```bash
-grep -rn "Sonnet-dawn" --include="*.md" --include="*.toml" --include="*.yml" .
+# Any hit here means an ownership reference was missed. This file is excluded
+# because it discusses the placeholder by name.
+grep -rn "OWNER" --include="*.md" --include="*.toml" --include="*.yml" . \
+  | grep -v "docs/PUBLISHING.md"
 ```
 
-Files that contain it: `README.md`, `README.zh-CN.md`, `pyproject.toml`,
-`CHANGELOG.md`, `docs/roadmap.md`, `.github/workflows/ci.yml`.
+Files that carry an ownership reference: `README.md`, `README.zh-CN.md`,
+`pyproject.toml`, `CHANGELOG.md`, `docs/roadmap.md`,
+`.github/workflows/ci.yml`.
 
 ## 2. Check the screenshot
 
@@ -106,7 +116,7 @@ Reddit is driven by early engagement velocity far more than by the content.
 ## 6. What usually goes wrong
 
 - **No screenshot.** The most common failure by a wide margin. Fix it before launching.
-- **Placeholder `Sonnet-dawn` still in the README.** Makes a real project look fake.
+- **A stale ownership placeholder.** An unsubstituted `OWNER` makes a real project look like a template that nobody finished.
 - **Launching with a broken CI badge.** Check the badge renders after your first push; run the workflow once and fix it *before* announcing.
 - **Only posting to r/FPGA.** Good channel, but you leave HN and the Chinese community on the table.
 - **Over-claiming.** The README is explicit that FST and the native parser are not done. That honesty is a feature: an engineer who finds a false claim leaves and never returns.
