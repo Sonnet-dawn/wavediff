@@ -38,8 +38,9 @@ these two waveforms first stop matching?*
   error. Plus `--json` for machine-readable results and `--radix {bin,hex,dec}`
   for display.
 - **Zero runtime dependencies.** Pure Python 3.10+, stdlib only.
-- 61 unit tests covering the parser, alignment, diff semantics and CLI exit
-  codes, runnable with stdlib `unittest` — no test framework to install.
+- 70 unit tests covering the parser, alignment, diff semantics, report
+  rendering and CLI exit codes, runnable with stdlib `unittest` — no test
+  framework to install.
 
 ### Notes
 
