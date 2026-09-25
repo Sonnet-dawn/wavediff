@@ -99,7 +99,6 @@ jobs:
           name: dist
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          # Fail loudly rather than silently skipping a version that already
-          # exists -- a re-tag should be a deliberate act.
-          attestations: true
+        # No `with:` block on purpose. The action fails if the version already
+        # exists on PyPI, which is the behaviour we want: re-publishing a
+        # released version must be a deliberate act, never a silent no-op.
