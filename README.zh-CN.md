@@ -9,6 +9,7 @@ CI 退出码，也能生成一份可以直接贴进 PR 的报告。
 [![ci](https://github.com/Sonnet-dawn/wavediff/actions/workflows/ci.yml/badge.svg)](https://github.com/Sonnet-dawn/wavediff/actions/workflows/ci.yml)
 [![python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![license](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![在线演示](https://img.shields.io/badge/demo-live-blue)](https://sonnet-dawn.github.io/wavediff/demo.html)
 
 *[English](README.md) · 简体中文*
 
@@ -63,7 +64,12 @@ HTML 报告会把每个分歧信号的两版波形都画出来，并把分歧区
 ![wavediff 生成的 HTML 差异报告，显示两个分歧信号](docs/demo.png)
 
 这份报告就是 `docs/demo.html`——单文件、内联 SVG、无脚本、无网络请求，所以无论
-从邮件附件还是共享盘打开都能正常显示。十秒钟即可自己复现：
+从邮件附件还是共享盘打开都能正常显示。
+
+**[▶ 在线打开这份报告](https://sonnet-dawn.github.io/wavediff/demo.html)** ——
+不用装任何东西，点开就渲染。
+
+十秒钟即可自己复现：
 
 ```bash
 git clone https://github.com/Sonnet-dawn/wavediff && cd wavediff

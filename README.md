@@ -12,6 +12,7 @@ first diverge — as a CI exit code and as a report you can paste into a PR.
 [![python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![license](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 [![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml)
+[![live demo](https://img.shields.io/badge/demo-live-blue)](https://sonnet-dawn.github.io/wavediff/demo.html)
 
 *English · [简体中文](README.zh-CN.md)*
 
@@ -70,7 +71,12 @@ disagreeing intervals shaded:
 
 That file is `docs/demo.html` — a single self-contained file with inline SVG,
 no scripts and no network requests, so it works from an email attachment or a
-shared drive. Reproduce it in ten seconds:
+shared drive.
+
+**[▶ Open that report live](https://sonnet-dawn.github.io/wavediff/demo.html)** —
+no install, no signup, it just renders.
+
+Reproduce it in ten seconds:
 
 ```bash
 git clone https://github.com/Sonnet-dawn/wavediff && cd wavediff

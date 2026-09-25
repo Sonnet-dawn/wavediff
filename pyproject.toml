@@ -34,6 +34,7 @@ wavediff = "wavediff.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/Sonnet-dawn/wavediff"
+Documentation = "https://sonnet-dawn.github.io/wavediff/"
 Repository = "https://github.com/Sonnet-dawn/wavediff"
 Issues = "https://github.com/Sonnet-dawn/wavediff/issues"
 Changelog = "https://github.com/Sonnet-dawn/wavediff/blob/main/CHANGELOG.md"
