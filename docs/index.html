@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>wavediff — find the first moment two simulation waveforms disagree</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f1f5f9; color: #0f172a;
+         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         line-height: 1.6; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 64px 24px 80px; }
+  h1 { font-size: 40px; margin: 0 0 8px; letter-spacing: -0.02em; font-weight: 700; }
+  h1 code { background: none; font-size: inherit; }
+  .tagline { font-size: 19px; color: #475569; margin: 0 0 28px; max-width: 44em; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .07em;
+       color: #64748b; margin: 36px 0 12px; font-weight: 650; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+          padding: 22px 24px; margin-bottom: 16px; }
+  pre { background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 8px;
+        overflow-x: auto; font-size: 13px; margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px;
+         background: #f1f5f9; padding: 1px 5px; border-radius: 4px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 6px; }
+  a.btn { display: inline-block; padding: 10px 18px; border-radius: 8px; text-decoration: none;
+          font-weight: 600; font-size: 14px; border: 1px solid #cbd5e1; color: #0f172a;
+          background: #fff; }
+  a.btn.primary { background: #0f172a; color: #fff; border-color: #0f172a; }
+  a.btn:hover { border-color: #94a3b8; }
+  ul { margin: 0; padding-left: 20px; }
+  li { margin: 5px 0; }
+  .muted { color: #64748b; font-size: 14px; }
+  .shot { width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; display: block; }
+  footer { margin-top: 40px; text-align: center; color: #94a3b8; font-size: 13px; }
+  footer a { color: #64748b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1><code>wavediff</code></h1>
+  <p class="tagline">
+    Find the first moment two simulation waveforms disagree. A VCD diff for
+    Verilog and SystemVerilog regression — exact divergence time, CI exit codes,
+    and a self-contained HTML report.
+  </p>
+
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/Sonnet-dawn/wavediff">View on GitHub</a>
+    <a class="btn" href="demo.html">Open a live report</a>
+    <a class="btn" href="https://github.com/Sonnet-dawn/wavediff/blob/main/docs/design.md">Design notes</a>
+  </div>
+
+  <h2>Install</h2>
+  <div class="card">
+    <pre>pip install git+https://github.com/Sonnet-dawn/wavediff</pre>
+    <p class="muted" style="margin:12px 0 0">
+      No dependencies — pure Python 3.10+, standard library only.
+      Reads VCD; nothing to compile and nothing to license.
+    </p>
+  </div>
+
+  <h2>Why it exists</h2>
+  <div class="card">
+    <p style="margin-top:0">
+      You changed the RTL. The test still passes. You need to know
+      <strong>what else moved</strong> — and the only tools that answer that are
+      Verdi and SimVision, which cost more than a laptop and only read FSDB.
+    </p>
+    <p style="margin-bottom:0">
+      The waveform equivalent of <code>git diff</code> has been missing, so the
+      workaround is a human scrolling two synchronised waveform windows looking
+      for the one step that happens in a different place. That is slow,
+      unreliable, and invisible to CI.
+    </p>
+  </div>
+
+  <h2>What you get</h2>
+  <div class="card">
+    <pre>$ wavediff golden.vcd regress.vcd --html diff.html
+
+DIVERGED  first difference at t=36 (1ns); 2 differ, 3 match
+
+  t=36   tb.dut.result    A=00110010    B=00111111    (1 interval)
+  t=66   tb.dut.valid     A=0           B=1           (1 interval)</pre>
+    <p class="muted" style="margin:12px 0 0">
+      The exact cycle, the hierarchical signal name, and the <em>interval</em> —
+      so a one-cycle glitch is distinguishable from a permanently stuck signal.
+    </p>
+  </div>
+
+  <h2>The report</h2>
+  <div class="card">
+    <a href="demo.html"><img class="shot" src="demo.png"
+      alt="wavediff HTML report showing two divergent signals with the disagreeing intervals shaded"/></a>
+    <p class="muted" style="margin:12px 0 0">
+      One self-contained file: inline SVG, no scripts, no network requests.
+      It works from an email attachment or a shared drive.
+      <a href="demo.html">Open the live report &rarr;</a>
+    </p>
+  </div>
+
+  <h2>Highlights</h2>
+  <div class="card">
+    <ul>
+      <li><strong>Exact, not sampled.</strong> Compares transition streams, so the
+          divergence time is correct at any timescale resolution.</li>
+      <li><strong>Timeline alignment.</strong> <code>none</code>, <code>auto</code>
+          (majority vote), <code>shift</code>, <code>reference</code> — because two
+          dumps have no guaranteed common time origin, and a naive diff drowns the
+          one real change in hundreds of phantom ones.</li>
+      <li><strong>CI-native.</strong> Exit <code>0</code> identical,
+          <code>1</code> diverged, <code>2</code> error.</li>
+      <li><strong>Zero dependencies.</strong> Pure Python, standard library only.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <a href="https://github.com/Sonnet-dawn/wavediff">github.com/Sonnet-dawn/wavediff</a>
+    &nbsp;·&nbsp; Apache-2.0
+  </footer>
+</div>
+</body>
+</html>

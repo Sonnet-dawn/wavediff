@@ -64,17 +64,36 @@ A terminal GIF of the command running is a good second asset. Keep both under
 
 ### Publish to PyPI
 
-**Status: not done yet.** While it is pending, the README installs from GitHub
-(`pip install git+https://github.com/Sonnet-dawn/wavediff`), which works today.
-The `wavediff` name was verified free on PyPI, but that is first-come — claim it
-before you announce anything.
+**Status: deliberately deferred.** GitHub Pages serves the landing page at
+`https://sonnet-dawn.github.io/wavediff/`, and the README installs from GitHub:
 
-`.github/workflows/publish.yml` is already wired for **Trusted Publishing**, so
-no API token is ever stored in the repo or in CI. One-time setup on PyPI:
+```bash
+pip install git+https://github.com/Sonnet-dawn/wavediff
+```
 
-1. Create a PyPI account and verify the email.
-2. Go to **Account → Publishing → Add a pending publisher**.
-3. Fill in exactly:
+That works today and is verified end to end (install, console script, and all
+four exit codes). Deferring PyPI costs little for an EDA tool, because the
+audience all have `git` — which is the only extra requirement `git+https`
+imposes over a plain `pip install`.
+
+**The one rule while PyPI is deferred:** do not write `pip install wavediff`
+anywhere. `wavediff` is currently an **unclaimed name on PyPI**, so that command
+does not fail — it installs whatever a stranger publishes. If someone claims the
+name and ships something malicious, every reader who follows that instruction
+gets it. Advertising an unclaimed package name is a supply-chain invitation, not
+just a broken link.
+
+If you want the short command eventually, `.github/workflows/publish.yml` is
+already wired for **Trusted Publishing** — no API token is stored anywhere.
+It needs two things:
+
+1. A verified PyPI account email. PyPI blocks all account actions (creating
+   projects, adding publishers, uploading) until the primary email is verified.
+   University mail domains often drop or delay mail from outside the country, so
+   if the verification mail never arrives, add a mainstream personal address at
+   **https://pypi.org/manage/account/** and set it as primary — adding a new
+   address is allowed even while the old one is unverified.
+2. A pending publisher at **Account → Publishing → Add a pending publisher**:
 
    | Field | Value |
    |---|---|
@@ -84,27 +103,22 @@ no API token is ever stored in the repo or in CI. One-time setup on PyPI:
    | Workflow name | `publish.yml` |
    | Environment name | `pypi` |
 
-4. Push a tag: `git tag v0.1.0 && git push origin v0.1.0`.
+Then run **Actions → publish → Run workflow** and type `publish` in the confirm
+field. The workflow runs the tests and the CLI exit-code contract, builds the
+sdist and wheel, runs `twine check`, installs the wheel into a fresh venv and
+smoke-tests it, and only then uploads.
 
-The workflow runs the tests, verifies the CLI exit-code contract, builds the
-sdist and wheel, checks them with `twine check`, installs the wheel into a fresh
-venv and smoke-tests it, and only then uploads. Nothing reaches PyPI unless all
-of that passes.
+Finally, flip both READMEs back to `pip install wavediff` (search for the
+`FLIP ME` comment) and confirm from a clean environment.
 
-5. **Flip the README.** Replace `pip install git+https://…` with
-   `pip install wavediff` in both `README.md` and `README.zh-CN.md`, and delete
-   the `FLIP ME` comment. Then verify from a clean environment:
+**Until PyPI is claimed, tag pushes do not publish.** The workflow also triggers
+on `v*` tags; without a pending publisher configured that job fails at the
+upload step. That is expected and harmless, but if it becomes noisy, drop the
+`push: tags` trigger until the publisher exists.
 
-   ```bash
-   pip install wavediff && wavediff --help
-   ```
-
-   Install the console script on Windows, macOS and Linux at least once — path
-   and encoding bugs love to hide in this step.
-
-**Fallback if you prefer a token:** `pip install build twine && python -m build
-&& twine upload dist/*`. Prefer Trusted Publishing: a token in CI is a long-lived
-secret that will eventually leak, and OIDC credentials expire in minutes.
+**Token fallback:** `pip install build twine && python -m build && twine upload
+dist/*`. Prefer Trusted Publishing — a token in CI is a long-lived secret that
+will eventually leak, while OIDC credentials expire in minutes.
 
 ## 4. Launch, in this order
 
