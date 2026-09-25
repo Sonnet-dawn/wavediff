@@ -1,0 +1,105 @@
+name: publish
+
+# Publishes to PyPI using Trusted Publishing (OIDC) -- no API token is stored
+# anywhere. PyPI verifies the workflow's identity via a short-lived OIDC token.
+#
+# One-time setup on PyPI (Account -> Publishing -> Add a pending publisher):
+#   PyPI project name : wavediff
+#   Owner             : Sonnet-dawn
+#   Repository name   : wavediff
+#   Workflow name     : publish.yml
+#   Environment name  : pypi
+#
+# After that, pushing a v* tag publishes a release automatically.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'publish' to confirm a manual PyPI upload"
+        required: true
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.10", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -t tests -v
+        env:
+          PYTHONPATH: src
+      # Never publish an artefact that does not pass its own CLI contract.
+      - name: Verify the CLI exit-code contract
+        run: |
+          set -e
+          export PYTHONPATH=src
+          python -m wavediff tests/fixtures/golden.vcd tests/fixtures/golden.vcd
+          python -m wavediff tests/fixtures/golden.vcd tests/fixtures/shifted.vcd
+          set +e
+          python -m wavediff tests/fixtures/golden.vcd tests/fixtures/diverged.vcd -q
+          code=$?
+          set -e
+          test "$code" -eq 1 || { echo "expected exit 1, got $code"; exit 1; }
+
+  build:
+    name: build sdist and wheel
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build twine
+      - run: python -m build
+      - name: Check the artefacts
+        run: python -m twine check dist/*
+      - name: Install from the wheel and smoke-test it
+        run: |
+          python -m venv /tmp/check
+          /tmp/check/bin/pip install dist/*.whl
+          /tmp/check/bin/wavediff --help > /dev/null
+          set +e
+          /tmp/check/bin/wavediff tests/fixtures/golden.vcd tests/fixtures/diverged.vcd -q
+          code=$?
+          set -e
+          test "$code" -eq 1 || { echo "installed wheel misbehaved: exit $code"; exit 1; }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: upload to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || inputs.confirm == 'publish'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/wavediff
+    permissions:
+      id-token: write # required for Trusted Publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # Fail loudly rather than silently skipping a version that already
+          # exists -- a re-tag should be a deliberate act.
+          attestations: true

@@ -64,23 +64,47 @@ A terminal GIF of the command running is a good second asset. Keep both under
 
 ### Publish to PyPI
 
-The README says `pip install wavediff`, so make that true before launching —
-a broken install command on the first screen loses the reader permanently.
+**Status: not done yet.** While it is pending, the README installs from GitHub
+(`pip install git+https://github.com/Sonnet-dawn/wavediff`), which works today.
+The `wavediff` name was verified free on PyPI, but that is first-come — claim it
+before you announce anything.
 
-```bash
-pip install build twine
-python -m build                 # produces dist/wavediff-0.1.0-py3-none-any.whl
-twine check dist/*
-twine upload dist/*             # needs a PyPI API token
-```
+`.github/workflows/publish.yml` is already wired for **Trusted Publishing**, so
+no API token is ever stored in the repo or in CI. One-time setup on PyPI:
 
-Then verify from a clean environment: `pip install wavediff && wavediff --help`.
-Install the console script on Windows, macOS and Linux at least once — path and
-encoding bugs love to hide in this step.
+1. Create a PyPI account and verify the email.
+2. Go to **Account → Publishing → Add a pending publisher**.
+3. Fill in exactly:
 
-Alternatively, launch on GitHub first and publish to PyPI once the API settles;
-`pip install git+https://github.com/Sonnet-dawn/wavediff` also works from day one if
-you put that in the README instead.
+   | Field | Value |
+   |---|---|
+   | PyPI project name | `wavediff` |
+   | Owner | `Sonnet-dawn` |
+   | Repository name | `wavediff` |
+   | Workflow name | `publish.yml` |
+   | Environment name | `pypi` |
+
+4. Push a tag: `git tag v0.1.0 && git push origin v0.1.0`.
+
+The workflow runs the tests, verifies the CLI exit-code contract, builds the
+sdist and wheel, checks them with `twine check`, installs the wheel into a fresh
+venv and smoke-tests it, and only then uploads. Nothing reaches PyPI unless all
+of that passes.
+
+5. **Flip the README.** Replace `pip install git+https://…` with
+   `pip install wavediff` in both `README.md` and `README.zh-CN.md`, and delete
+   the `FLIP ME` comment. Then verify from a clean environment:
+
+   ```bash
+   pip install wavediff && wavediff --help
+   ```
+
+   Install the console script on Windows, macOS and Linux at least once — path
+   and encoding bugs love to hide in this step.
+
+**Fallback if you prefer a token:** `pip install build twine && python -m build
+&& twine upload dist/*`. Prefer Trusted Publishing: a token in CI is a long-lived
+secret that will eventually leak, and OIDC credentials expire in minutes.
 
 ## 4. Launch, in this order
 

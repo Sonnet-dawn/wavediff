@@ -79,10 +79,13 @@ $ wavediff a.vcd b.vcd --json out.json   # 机器可读
 ## 安装
 
 ```bash
-pip install wavediff
+pip install git+https://github.com/Sonnet-dawn/wavediff
 ```
 
+<!-- 待办：PyPI 发布上线后，把上面这行换回 `pip install wavediff` 并删掉本注释。 -->
+
 **零依赖**，纯 Python 标准库实现。只读 VCD，不需要编译，也不需要任何 license。
+用这种方式安装只会拉进 `wavediff` 本身，没有任何间接依赖。
 
 ## 关键难点：两条时间轴本来不可比
 

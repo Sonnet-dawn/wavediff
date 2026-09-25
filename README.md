@@ -86,11 +86,14 @@ $ wavediff a.vcd b.vcd --json out.json   # machine-readable
 ## Install
 
 ```bash
-pip install wavediff
+pip install git+https://github.com/Sonnet-dawn/wavediff
 ```
 
+<!-- FLIP ME: once the PyPI release is live, replace the line above with
+     `pip install wavediff` and delete this comment. See docs/PUBLISHING.md. -->
+
 No dependencies. Pure Python, stdlib only. It reads VCD; nothing to compile and
-nothing to license.
+nothing to license. Installing this way pulls in nothing but `wavediff` itself.
 
 ## The hard part: timelines are not comparable
 
